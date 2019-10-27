@@ -16,7 +16,6 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<start-class>com.example.demo.DemoApplication</start-class>
 	</properties>
 
 	<dependencies>
@@ -46,36 +45,9 @@
 	<build>
 		<plugins>
 			<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<executions>
-						<execution>
-							<goals>
-								<goal>repackage</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
-
-					<!-- Building an executable jar -->
-
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.4</version>
-					<configuration>
-						<archive>
-							<manifest>
-
-								<!-- give full qualified name of your main class -->
-								<mainClass>com.example.demo.DemoApplication</mainClass>
-
-							</manifest>
-						</archive>
-					</configuration>
-				</plugin>
-
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 
