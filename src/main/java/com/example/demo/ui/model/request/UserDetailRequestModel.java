@@ -1,8 +1,15 @@
 package com.example.demo.ui.model.request;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class UserDetailRequestModel {
+	@NotNull(message="First name cannot be blank")
+	@Size(min=2,max=200,message="first name must be between 10 to 200 character long")
 	private String firstName;
+	@NotNull(message="Last name cannot be blank")
 	private String lastName;
+	@NotNull(message="Email cannot be blank")
 	private String email;
 	private String password;
 

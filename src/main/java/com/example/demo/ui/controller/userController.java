@@ -1,5 +1,7 @@
 package com.example.demo.ui.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -114,6 +116,7 @@ public class userController {
 	 * so the below API can consume both JSON and XML and also send both JSON and XML
 	 */
 	
+	/*
 	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
 			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<UserRest> postUser(@RequestBody UserDetailRequestModel userDetails) {
@@ -126,6 +129,34 @@ public class userController {
 		// this will return json to UI
 		return new ResponseEntity<UserRest>(returnValue,HttpStatus.OK);
 	}
+	*/
+	
+	/*
+	 * step5
+	 * 
+	 * in this section we will learn how to validate data
+	 * spring boot by default support validation
+	 * but we have to add @Valid annotation to initiate validation or we can use any hibernate spring validation 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	
+	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
+			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<UserRest> postUser(@Valid @RequestBody UserDetailRequestModel userDetails) {
+		UserRest returnValue = new UserRest();
+		returnValue.setEmail(userDetails.getEmail());
+		returnValue.setFirstName(userDetails.getFirstName());
+		;
+		returnValue.setLastName(userDetails.getLastName());
+		
+		// this will return json to UI
+		return new ResponseEntity<UserRest>(returnValue,HttpStatus.OK);
+	}
+	
+	
 	@PutMapping
 	public String updateUser() {
 		return "update user get called";
