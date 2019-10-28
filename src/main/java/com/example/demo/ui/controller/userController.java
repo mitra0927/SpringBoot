@@ -8,17 +8,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.ui.model.request.UserDetailRequestModel;
 import com.example.demo.ui.model.response.UserRest;
 
 @RestController // when we declare this annotation it will able to consume rest
 				// api when it url matches
 @RequestMapping("users") // this annotation match the URL for rest API
 public class userController {
-
+	
+	// step 1
 	// get user by request params example
 	// http://localhost:8080/users?page=1&limit=50
 	// getUserByQuery(@RequestParam(value = "page"\) int
@@ -44,7 +47,7 @@ public class userController {
 			@RequestParam(value = "sort", defaultValue = "desc", required = false) String sort) {
 		return "get user get called userid with page= " + page + " , limit = " + limit + " and sortby = " + sort;
 	}
-
+	
 	// get API with @PathVariable example http://localhost:8080/users/55455
 	/*
 	 * @GetMapping(path = "/{user_id}") public String getUser(@PathVariable
@@ -61,7 +64,7 @@ public class userController {
 	 * select Jackson Dataformat XML
 	 */
 	/*
-
+	we had created UserRest class to send response back to ui
 	@GetMapping(path = "/{user_id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public UserRest getUser(@PathVariable String user_id) {
 
@@ -77,8 +80,8 @@ public class userController {
 	}
 	
 	*/
-	
-	// how to send custom http status code
+	//step 3
+	// how to send custom http status code 
 
 	@GetMapping(path = "/{user_id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<UserRest> getUser(@PathVariable String user_id) {
@@ -93,11 +96,36 @@ public class userController {
 		// this will return json to UI
 		return new ResponseEntity<UserRest>(HttpStatus.BAD_REQUEST);
 	}
-	@PostMapping
-	public String postUser() {
-		return "post user get called";
+	
+	// in step 4 we will run post method
+	// in order to read JSON of UI we have to create one class that will hold the details of JSON which are send from UI.
+	/*
+	 * note 
+	 * we had created one new Class UserDetailRequestModel.java and the variable which we declare there
+	 * must match with request JSON this will help us to create javaObject from Json
+	 * 
+	 * we will use @RequestBody to read request data
+	 * 
+	 * so it will read data from request and passit to UserDetailRequestModel and we can access those data using 
+	 * userDetails
+	 * 
+	 * consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE } mean our API can consume both
+	 * JSON and XML from UI
+	 * so the below API can consume both JSON and XML and also send both JSON and XML
+	 */
+	
+	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
+			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<UserRest> postUser(@RequestBody UserDetailRequestModel userDetails) {
+		UserRest returnValue = new UserRest();
+		returnValue.setEmail(userDetails.getEmail());
+		returnValue.setFirstName(userDetails.getFirstName());
+		;
+		returnValue.setLastName(userDetails.getLastName());
+		
+		// this will return json to UI
+		return new ResponseEntity<UserRest>(returnValue,HttpStatus.OK);
 	}
-
 	@PutMapping
 	public String updateUser() {
 		return "update user get called";
