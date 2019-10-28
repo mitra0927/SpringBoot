@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.ui.model.response.UserRest;
+
 @RestController //when we declare this annotation it will able to consume rest api when it url matches
 @RequestMapping("users")  // this annotation match the URL for rest API
 public class userController {
@@ -33,9 +35,25 @@ public class userController {
 	}
 	
 	// get API with @PathVariable example http://localhost:8080/users/55455
+	/*
 	@GetMapping(path = "/{user_id}")
 	public String getUser(@PathVariable String user_id){
 		return "get user get called userid = "+user_id;
+	}
+	*/
+	
+	// return json response to the API
+	
+	@GetMapping(path = "/{user_id}")
+	public UserRest getUser(@PathVariable String user_id){
+		
+		UserRest returnValue = new UserRest();
+		returnValue.setEmail("firdous.alam2058@gmail.com");
+		returnValue.setFirstName("Firdous");;
+		returnValue.setLastName("Alam");
+		returnValue.setUserId("1");
+		
+		return returnValue;
 	}
 	
 	@PostMapping
