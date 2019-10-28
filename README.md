@@ -1,5 +1,5 @@
 # SpringBoot
 Spingboot application
 
-How to handle request and request for API.
+How to handle POST request and Response for API.
 
