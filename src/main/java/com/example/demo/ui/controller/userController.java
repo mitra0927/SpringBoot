@@ -1,5 +1,9 @@
 package com.example.demo.ui.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -22,6 +26,8 @@ import com.example.demo.ui.model.response.UserRest;
 				// api when it url matches
 @RequestMapping("users") // this annotation match the URL for rest API
 public class userController {
+	
+	Map<String , UserRest> users;
 
 	// step 1
 	// get user by request params example
@@ -83,6 +89,7 @@ public class userController {
 	// step 3
 	// how to send custom http status code
 
+	/*
 	@GetMapping(path = "/{user_id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<UserRest> getUser(@PathVariable String user_id) {
 
@@ -96,7 +103,7 @@ public class userController {
 		// this will return json to UI
 		return new ResponseEntity<UserRest>(HttpStatus.BAD_REQUEST);
 	}
-
+	*/
 	// in step 4 we will run post method
 	// in order to read JSON of UI we have to create one class that will hold
 	// the details of JSON which are send from UI.
@@ -142,15 +149,31 @@ public class userController {
 	 * 
 	 */
 
+	@GetMapping(path = "/{user_id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<UserRest> getUser(@PathVariable String user_id) {
+		if(users.containsKey(user_id))
+		{
+			return new ResponseEntity<>(users.get(user_id),HttpStatus.OK);
+		}
+		else
+		{
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		
+	}
+	
 	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<UserRest> postUser(@Valid @RequestBody UserDetailRequestModel userDetails) {
 		UserRest returnValue = new UserRest();
 		returnValue.setEmail(userDetails.getEmail());
 		returnValue.setFirstName(userDetails.getFirstName());
-		;
 		returnValue.setLastName(userDetails.getLastName());
-
+		// step 6 from here
+		String userId = UUID.randomUUID().toString();
+		returnValue.setUserId(userId);
+		if(users == null) users = new HashMap<String, UserRest>();
+		users.put(userId, returnValue);
 		// this will return json to UI
 		return new ResponseEntity<UserRest>(returnValue, HttpStatus.OK);
 	}
