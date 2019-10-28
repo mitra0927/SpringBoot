@@ -53,6 +53,7 @@ public class userController {
 		returnValue.setLastName("Alam");
 		returnValue.setUserId("1");
 		
+		// this will return json to UI
 		return returnValue;
 	}
 	
