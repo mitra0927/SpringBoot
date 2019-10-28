@@ -1,6 +1,8 @@
 package com.example.demo.ui.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,6 +60,7 @@ public class userController {
 	 * https://mvnrepository.com/search?q=jackson+xml and type jackson xml
 	 * select Jackson Dataformat XML
 	 */
+	/*
 
 	@GetMapping(path = "/{user_id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public UserRest getUser(@PathVariable String user_id) {
@@ -72,7 +75,24 @@ public class userController {
 		// this will return json to UI
 		return returnValue;
 	}
+	
+	*/
+	
+	// how to send custom http status code
 
+	@GetMapping(path = "/{user_id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<UserRest> getUser(@PathVariable String user_id) {
+
+		UserRest returnValue = new UserRest();
+		returnValue.setEmail("firdous.alam2058@gmail.com");
+		returnValue.setFirstName("Firdous");
+		;
+		returnValue.setLastName("Alam");
+		returnValue.setUserId("1");
+
+		// this will return json to UI
+		return new ResponseEntity<UserRest>(HttpStatus.BAD_REQUEST);
+	}
 	@PostMapping
 	public String postUser() {
 		return "post user get called";
