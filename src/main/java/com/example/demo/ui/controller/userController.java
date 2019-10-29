@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.ui.model.request.UpdateUserDetailRequestModel;
 import com.example.demo.ui.model.request.UserDetailRequestModel;
 import com.example.demo.ui.model.response.UserRest;
 
@@ -177,10 +178,20 @@ public class userController {
 		// this will return json to UI
 		return new ResponseEntity<UserRest>(returnValue, HttpStatus.OK);
 	}
-
-	@PutMapping
-	public String updateUser() {
-		return "update user get called";
+	// step 6
+	
+	// so here similar to get we will send ID in path and similar to post we accept and send both XML and json data
+	// when we see updateUser we will find out that it use @PathVariable String user_id,@Valid @RequestBody UserDetailRequestModel userDetails
+	// @PathVariable String user_id to read usedid from path and @RequestBody UpdateUserDetailRequestModel userDetails to read and request json.
+	// and we will create new model class UpdateUserDetailRequestModel
+	@PutMapping(path = "/{user_id}",consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
+			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public UserRest updateUser(@PathVariable String user_id, @Valid @RequestBody UpdateUserDetailRequestModel userDetails) {
+		UserRest storeUserDetails = users.get(user_id);
+		storeUserDetails.setFirstName(userDetails.getFirstName());
+		storeUserDetails.setLastName(userDetails.getLastName());
+		users.put(user_id, storeUserDetails);
+		return storeUserDetails;
 	}
 
 	@DeleteMapping
